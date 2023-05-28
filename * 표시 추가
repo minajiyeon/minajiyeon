@@ -1,0 +1,16 @@
+ show_calendar(self, year, month):
+        my_cal = calendar.TextCalendar(firstweekday=6)
+        cal_star = my_cal.formatmonth(year, month) #해당하는 달력을 텍스트(문자열) 형식으로 반환
+
+        for day in range(1, calendar.monthrange(year, month)[1] + 1):#일정이 있는지 확인
+            events = [event["title"] for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
+            if len(events) > 0:
+                cal_star = cal_star.replace(str(day), str(day) + '*')
+
+        print(cal_star)
+
+        for day in range(1, calendar.monthrange(year, month)[1] + 1):
+            events = [event["title"] for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
+            if len(events) > 0:
+                print(f"{calendar.month_name[month]} {day}: {' | '.join(events)}")
+
