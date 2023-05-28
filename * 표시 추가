@@ -1,30 +1,29 @@
 import calendar
 
-class Schedule: #schedule 클래스는 사용자의 일정을 관리하기 위한 기능을 제공함.
+class Schedule:
+    def __init__(self):
+        self.schedule = []
 
-    def __init__(self): #클래서 초기화
-        self.schedule = [] #리스트 생성
-        
     def show_calendar(self, year, month):
         my_cal = calendar.TextCalendar(firstweekday=6)
-        cal_str = my_cal.formatmonth(year, month) #해당하는 달력을 텍스트(문자열) 형식으로 반환
+        cal_str = my_cal.formatmonth(year, month)
 
-        for day in range(1, calendar.monthrange(year, month)[1] + 1):#일정이 있는지 확인
-            events = [event["title"] for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
+        for day in range(1, calendar.monthrange(year, month)[1] + 1):
+            events = [event for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
             if events:
-                cal_str = cal_str.replace(f"{day}", f"{day}*")
+                cal_str = cal_str.replace(f"{day} ", f"{day}*")
 
         print(cal_str)
 
-        for day in range(1, calendar.monthrange(year, month)[1] + 1):
-            events = [event["title"] for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
-            if events:
-                print(f"{calendar.month_name[month]} {day}: {' | '.join(events)}")
+        sorted_schedule = sorted(self.schedule, key=lambda event: (event["date"], event["time"]))
 
+        for event in sorted_schedule:
+            date = event["date"]
+            time = event["time"]
+            title = event["title"]
+            print(f"{date} {time}: {title}")
 
-            
 my_schedule = Schedule()
-event_list = {}  # 일정을 저장할 딕셔너리
 
 while True:
     print("\n===== 일정 관리 프로그램 =====")
@@ -38,11 +37,17 @@ while True:
         year = int(input("년도를 입력하세요: "))
         month = int(input("월을 입력하세요: "))
         my_schedule.show_calendar(year, month)
-    elif choice == "2": #일정 추가
+    elif choice == "2":
         date = input("날짜를 입력하세요 (YYYY-MM-DD): ")
         time = input("시간을 입력하세요 (HH:MM): ")
         title = input("일정 내용을 입력하세요: ")
-        my_schedule.schedule.append({"date": date, "time" : time, "title": title})
+        my_schedule.schedule.append({"date": date, "time": time, "title": title})
     elif choice == "3":
         date = input("조회할 날짜를 입력하세요 (YYYY-MM-DD): ")
-        my_schedule.schedule_searching(date)
+        events = [event for event in my_schedule.schedule if event["date"] == date]
+        if events:
+            for event in events:
+                print(f"{event['date']} {event['time']}: {event['title']}")
+        else:
+            print("해당 날짜에 일정이 없습니다.")
+
