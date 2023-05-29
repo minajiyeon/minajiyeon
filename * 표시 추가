@@ -1,23 +1,23 @@
 import calendar
 
-class Schedule:
+class Schedule: #클래스 정의
     def __init__(self):
         self.schedule = []
 
-    def show_calendar(self, year, month):
-        my_cal = calendar.TextCalendar(firstweekday=6)
-        cal_str = my_cal.formatmonth(year, month)
+    def show_calendar(self, year, month): #달력보기
+        my_cal = calendar.TextCalendar(firstweekday=6) #달력생성
+        cal_str = my_cal.formatmonth(year, month) #달력을 문자열로 저장
 
-        for day in range(1, calendar.monthrange(year, month)[1] + 1):
-            events = [event for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"]
+        for day in range(1, calendar.monthrange(year, month)[1] + 1):#일정 유무 확인
+            events = [event for event in self.schedule if event["date"] == f"{year}-{month:02d}-{day:02d}"] #events 리스트에 모든 일정의 제목만 저장
             if events:
-                cal_str = cal_str.replace(f"{day} ", f"{day}*")
+                cal_str = cal_str.replace(f"{day} ", f"{day}*") # 일정 있는 날에 * 추가
 
         print(cal_str)
 
-        sorted_schedule = sorted(self.schedule, key=lambda event: (event["date"], event["time"]))
+        sorted_schedule = sorted(self.schedule, key=lambda event: (event["date"], event["time"])) #일정들 시간 순서대로 정렬
 
-        for event in sorted_schedule:
+        for event in sorted_schedule: #일정 출력
             date = event["date"]
             time = event["time"]
             title = event["title"]
