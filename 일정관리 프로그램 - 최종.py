@@ -9,8 +9,8 @@ class Schedule: #클래스 정의
         달력을_문자로 = 달력.formatmonth(년도, 월) #달력을 문자열로 저장
 
         for 날 in range(1, calendar.monthrange(년도, 월)[1] + 1):#일정 유무 확인
-            events = [일정_달력용 for 일정_달력용 in self.schedule if 일정_달력용["날짜"] == f"{년도}-{월:02d}-{날:02d}"] #events 리스트에 모든 일정의 제목만 저장
-            if events:
+            일정제목 = [일정_달력용 for 일정_달력용 in self.schedule if 일정_달력용["날짜"] == f"{년도}-{월:02d}-{날:02d}"] # 일정제목 리스트에 모든 일정의 제목만 저장
+            if 일정제목:
                 달력을_문자로 = 달력을_문자로.replace(f"{날} ", f"{날}*") # 일정 있는 날에 * 추가
 
         print(달력을_문자로)
