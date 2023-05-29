@@ -9,18 +9,18 @@ class Schedule: #클래스 정의
         달력을_문자로 = 달력.formatmonth(년도, 월) #달력을 문자열로 저장
 
         for 날 in range(1, calendar.monthrange(년도, 월)[1] + 1):#일정 유무 확인
-            events = [이벤트 for 이벤트 in self.schedule if 이벤트["날짜"] == f"{년도}-{월:02d}-{날:02d}"] #events 리스트에 모든 일정의 제목만 저장
+            events = [일정_달력용 for 일정_달력용 in self.schedule if 일정_달력용["날짜"] == f"{년도}-{월:02d}-{날:02d}"] #events 리스트에 모든 일정의 제목만 저장
             if events:
                 달력을_문자로 = 달력을_문자로.replace(f"{날} ", f"{날}*") # 일정 있는 날에 * 추가
 
         print(달력을_문자로)
 
-        내림차_스케쥴 = sorted(self.schedule, key=lambda 이벤트: (이벤트["날짜"], 이벤트["시간"])) #일정들 시간 순서대로 정렬
+        정렬_스케쥴 = sorted(self.schedule, key=lambda 일정_달력용: (일정_달력용["날짜"], 일정_달력용["시간"])) #일정들 시간 순서대로 정렬
 
-        for 이벤트 in 내림차_스케쥴: #일정 출력
-            날짜 = 이벤트["날짜"]
-            시간 = 이벤트["시간"]
-            일정 = 이벤트["일정"]
+        for 일정_달력용 in 정렬_스케쥴: #일정 출력
+            날짜 = 일정_달력용["날짜"]
+            시간 = 일정_달력용["시간"]
+            일정 = 일정_달력용["일정"]
             print(f"{날짜} {시간}: {일정}")
 
     def schedule_searching(self, 날짜, 시간=""): 
@@ -50,26 +50,26 @@ class Schedule: #클래스 정의
             if(스케쥴["날짜"] == 날짜 and 스케쥴["시간"] == 시간 and 스케쥴["일정"] == 일정):
                 삭제_리스트.append(스케쥴)
 
-        for 이벤트 in 삭제_리스트:
-            self.schedule.remove(이벤트)
+        for 일정_삭제용 in 삭제_리스트:
+            self.schedule.remove(일정_삭제용)
 
         if(삭제_리스트): #삭제_리스트에 값이 있을 경우 실행
             print("다음 일정이 삭제되었습니다:")
-            for 이벤트 in 삭제_리스트:
+            for 일정_삭제용 in 삭제_리스트:
                 print("============================================================")
-                print("날짜:", 이벤트["날짜"])
-                print("시간:", 이벤트["시간"])
-                print("일정:", 이벤트["일정"])
+                print("날짜:", 일정_삭제용["날짜"])
+                print("시간:", 일정_삭제용["시간"])
+                print("일정:", 일정_삭제용["일정"])
                 print("============================================================")
         else:
             print("해당하는 일정이 없습니다.")
 
     def save_schedule_to_file(self, 파일명): #파일에 저장
         with open(파일명, "w") as file:
-            for 이벤트 in self.schedule:
-                file.write(f"날짜 : {이벤트['날짜']}\n")
-                file.write(f"시간 : {이벤트['시간']}\n")
-                file.write(f"일정 : {이벤트['일정']}\n")
+            for 일정_저장용 in self.schedule:
+                file.write(f"날짜 : {일정_저장용['날짜']}\n")
+                file.write(f"시간 : {일정_저장용['시간']}\n")
+                file.write(f"일정 : {일정_저장용['일정']}\n")
 
     def load_schedule_from_file(self, 파일명): #저장된 파일을 불러옴
         self.schedule = []
